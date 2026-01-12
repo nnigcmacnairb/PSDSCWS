@@ -1,14 +1,16 @@
 
 configuration ContosoWebServer {
         param(
-                    [string[]]$NodeName = 'localhost'
+                    [string[]]$NodeName = 'MS'
         )
 
             Import-DscResource -ModuleName PSDesiredStateConfiguration
                 # Add other modules like xWebAdministration if needed
 
                     Node $NodeName {
-                                # Your DSC resources go here
+                        # Install IIS
+                        WindowsFeature IIS {Name='Web-Server'; Ensure='Present'}
+
                     }
                 }
 
