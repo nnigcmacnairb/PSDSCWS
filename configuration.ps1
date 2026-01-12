@@ -12,6 +12,25 @@ configuration ContosoWebServer {
                         # Install IIS
                         WindowsFeature IIS {Name='Web-Server'; Ensure='Present'}
 
+                        ## Folders
+                        File Webroot1 {
+                            Type = 'Directory'
+                            Ensure = 'Present'
+                            SourcePath = '\\Client01\PSHELL\Site1'
+                            DestinationPath = Join-Path 'c:\web\' 'Site1'
+                            Recurse = $true
+                            DependsOn = '[ipaddress]SetIpAddress'
+                        }
+                        File Webroot2 {
+                            Type = 'Directory'
+                            Ensure = 'Present'
+                            SourcePath = '\\Client01\PSHELL\Site2'
+                            DestinationPath = Join-Path 'c:\web\' 'Site2'
+                            Recurse = $true
+                            DependsOn = '[ipaddress]SetIpAddress'
+                        }
+
+
                         # Configure Network Adapter
                         IPAddress SetIPAddress {
                             InterfaceAlias ='Ethernet'
