@@ -16,21 +16,21 @@ configuration ContosoWebServer {
                         IPAddress SetIPAddress {
                             InterfaceAlias ='Ethernet'
                             Addressfamily = 'IPv4'
-                            IPAddress = 192.168.1.2/24
+                            IPAddress = '192.168.1.2'
                             KeepExistingAddress = $False
                         }
 
                         DefaultGatewayAddress setGateway {
                             InterfaceAlias =  'Ethernet'
                             AddressFamily =  'IPv4'
-                            Address = 192.168.1.10
+                            Address = '192.168.1.10'
                             DependsOn = '[IPAddress]SetIpAddress'
                         }
 
                         DnsServerAddress setDns {
                             InterfaceAlias = 'Ethernet'
                             AddressFamily =  'IPv4'
-                            Address = 192.168.1.1
+                            Address = '192.168.1.1'
                             DependsOn = '[IPAddress]SetIPAddress'
                         }
                     }
