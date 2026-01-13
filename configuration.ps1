@@ -6,11 +6,36 @@ configuration ContosoWebServer {
 
             Import-DscResource -ModuleName PSDesiredStateConfiguration
             Import-DscResource -ModuleName NetworkingDsc
-                # Add other modules like xWebAdministration if needed
+            Import-DscResource -modulename xWebAdministration
 
                     Node $NodeName {
                         # Install IIS
-                        WindowsFeature IIS {Name='Web-Server'; Ensure='Present'}
+                        WindowsFeature IIS {Name='Web-Server'; Ensure='Present';IncludeAllSubFeature = $true}
+                        WindowsFeature IISMgmt {Name='Web-Mgmt-Tools';Ensure='Present';IncludeAllSubFeature = $true;DependsOn = '[WindowsFeature]IIS'}
+
+                        # Windows activation service required for iis
+                        WindowsFeature WAS {
+                            Name = 'WAS'
+                            Ensure = 'Present'
+                            DependsOn = '[WindowsFeature]IIS'
+                            IncludeAllSubFeature = $true
+                        }
+
+                        xWebsite Site1 {
+                            Name = 'Site1'
+                            Ensure = 'Present'
+                            PhysicalPath = join-path 'c:\web' 'Site1'
+                            State = 'Started'
+                            BindingInfo = @(              
+                                MSFT_xWebBindingInformation {
+                                    Protocol  = 'HTTP'
+                                    Port      = 8081
+                                    IPAddress = '*'
+                                })
+                            DependsOn = @('[WindowsFeature]IIS','[File]Webroot1')
+
+                            }
+
 
                         ## Folders
                         File Webroot1 {
