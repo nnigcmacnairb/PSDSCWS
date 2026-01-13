@@ -18,11 +18,11 @@
         Features = 'Web-Server'
         Folders  = @(
             @{
-                Source      = '\\Client01\PShell\Site1'
+                Source      = '\\Client01\PShell\Labs\Site1'
                 Destination = 'C:\Site1'
             }
             @{
-                Source      = '\\Client01\PShell\Site2'
+                Source      = '\\Client01\PShell\Labs\Site2'
                 Destination = 'C:\Site2'
             }
         )
