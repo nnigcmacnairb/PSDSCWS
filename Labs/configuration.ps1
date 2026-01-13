@@ -1,4 +1,6 @@
-﻿$configData = Import-PowerShellDataFile -Path C:\PShell\Labs\configurationdata.psd1
+﻿#$configData = Invoke-Expression -Command (Get-Content -Path  C:\PShell\Labs\configurationdata.psd1 -Raw) 
+#Use secure variant
+$configData = Import-LocalizedData -BaseDirectory C:\PShell\Labs -FileName configurationdata.psd1 -SupportedCommand New-Object,ConvertTo-SecureString
 
 configuration WebServer
 {
