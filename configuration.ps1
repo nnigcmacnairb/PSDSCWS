@@ -1,4 +1,18 @@
 
+Install-PackageProvider Nuget -Force
+Set-psrepository -Name PSGallery -InstallationPolicy Trusted
+Install-Module NetworkingDsc -Force -Scope Allusers
+Install-Module xWebAdministration -force -scope allusers
+
+
+Invoke-Command -ComputerName MS -ScriptBlock {
+    Install-PackageProvider NuGet -Force
+    Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+    Install-Module xWebAdministration -Force -Scope AllUsers
+    Install-Module NetworkingDsc     -Force -Scope AllUsers
+}
+  
+
 configuration ContosoWebServer {
         param(
                     [string[]]$NodeName = 'MS'
@@ -35,6 +49,21 @@ configuration ContosoWebServer {
                             DependsOn = @('[WindowsFeature]IIS','[File]Webroot1')
 
                             }
+
+                            xWebsite Site2 {
+                                Name = 'Site2'
+                                Ensure = 'Present'
+                                PhysicalPath = join-path 'c:\web' 'Site2'
+                                State = 'Started'
+                                BindingInfo = @(              
+                                    MSFT_xWebBindingInformation {
+                                        Protocol  = 'HTTP'
+                                        Port      = 8181
+                                        IPAddress = '*'
+                                    })
+                                DependsOn = @('[WindowsFeature]IIS','[File]Webroot1')
+    
+                                }                            
 
 
                         ## Folders
