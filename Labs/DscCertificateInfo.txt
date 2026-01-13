@@ -1,7 +1,0 @@
-Subject    = CN=DscEncryptionCert
-Thumbprint = 71C27CECB4194E821C7A4B008F77DCD9046B8C39
-NotBefore  = "2022-01-01 12:00:01"
-NotAfter   = "2032-01-01 12:00:01"
-Password   = YOUR_PFX_PASSWD
-PrivatePfx = DscPrivateKey.pfx
-PublicCer   = DscPublicKey.cer
