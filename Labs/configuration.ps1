@@ -1,6 +1,6 @@
-﻿#$configData = Invoke-Expression -Command (Get-Content -Path  C:\PShell\Labs\configurationdata.psd1 -Raw) 
+﻿#$configData = Invoke-Expression -Command (Get-Content -Path  C:\PShell\PSDSCWS\Labs\configurationdata.psd1 -Raw) 
 #Use secure variant
-$configData = Import-LocalizedData -BaseDirectory C:\PShell\Labs -FileName configurationdata.psd1 -SupportedCommand New-Object,ConvertTo-SecureString
+$configData = Import-LocalizedData -BaseDirectory C:\PShell\PSDSCWS\Labs -FileName configurationdata.psd1 -SupportedCommand New-Object,ConvertTo-SecureString
 
 configuration WebServer
 {
