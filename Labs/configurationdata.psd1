@@ -26,19 +26,32 @@
                 Destination = 'C:\Site2'
             }
         )
+
+        # Below a snippet  showing what the changes to the configurationdata.psd1 could look like.
         WebSites = @(
             @{
                 Name         = 'Site1'
                 PhysicalPath = 'C:\Site1'
+                AppPool      = @{
+                    # Name must be unique
+                    Name = 'CustomAppPool1'
+                    # WARNING - The credentials shouldn't be in Plaintext in the Configuration               
+                    Credential = New-Object -TypeName PSCredential -ArgumentList 'AppPoolUser',(ConvertTo-SecureString -String 'Pa$$w0rd' -AsPlainText -Force)
+                }
                 Port         = 8080
-                Protocol     = 'http'
-            }
-            @{
+                Protocol     = 'http' 
+            }            
+            @{                
                 Name         = 'Site2'
                 PhysicalPath = 'C:\Site2'
-                Port         = 8081
-                Protocol     = 'http'
+                AppPool      = @{
+                    Name = 'CustomAppPool2'
+                    # Alternative way to create a PSCredential Object
+                    Credential = New-Object -TypeName PSCredential -ArgumentList 'AppPoolUser',(ConvertTo-SecureString -String 'Pa$$w0rd' -AsPlainText -Force)
             }
-        )
+                Port         = 8081
+                Protocol     = 'http' 
+            }
+        ) 
     }
 }
