@@ -1,0 +1,14 @@
+﻿steps:
+  - powershell: ./build/downloadDependencies.ps1
+  - powershell: ./build/runValidation.ps1
+  - task: PublishTestResults@2 # optional - CI tools can pick up and visualize test results!
+    inputs:
+      testResultsFormat: 'NUnit'
+      testResultsFiles: '**/testResults.xml'
+  - powershell: ./build/compileConfiguration.ps1
+  - powershell:  ./build/publishToAzureAutomation.ps1
+pool:
+  name: 'SelfHosted'
+trigger:
+  - main
+  - master
