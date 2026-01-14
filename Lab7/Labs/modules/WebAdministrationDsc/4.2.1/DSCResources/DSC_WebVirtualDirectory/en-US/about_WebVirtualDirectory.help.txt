@@ -1,0 +1,190 @@
+.NAME
+    WebVirtualDirectory
+
+.DESCRIPTION
+    The WebVirtualDirectory DSC resource is used to...
+
+    ## Requirements
+
+    * Target machine must be running Windows Server 2012 R2 or later.
+
+    ## Known issues
+
+    All issues are not listed here, see https://github.com/dsccommunity/WebAdministration/issues?q=is%3Aissue+is%3Aopen+in%3Atitle+WebVirtualDirectory.
+
+.PARAMETER Website
+    Key - String
+    Name of website with which Web Application is associated
+
+.PARAMETER WebApplication
+    Key - String
+    Web application name for the virtual directory
+
+.PARAMETER Name
+    Key - String
+    Name of virtual directory
+
+.PARAMETER PhysicalPath
+    Required - String
+    Physical path for the virtual directory
+
+.PARAMETER Credential
+    Write - Instance
+    Credential to use for accessing the virtual directory
+
+.PARAMETER Ensure
+    Write - String
+    Allowed values: Present, Absent
+    Whether virtual directory should be present or absent
+
+.EXAMPLE 1
+
+Create a new web virtual directory on the Default Web Site
+This example shows how to use the WebVirtualDirectory DSC resource to create a new virtual
+directory on the Default Web Site with a UNC path that requires credentials.
+
+configuration Sample_WebVirtualDirectory_NewVirtualDirectory_WithUncPath
+{
+    param
+    (
+        # Target nodes to apply the configuration
+        [System.String[]]
+        $NodeName = 'localhost',
+
+        # Name of virtual directory to create
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
+        [System.String]
+        $VirtualDirectoryName,
+
+        # Physical path of the virtual directory
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
+        [System.String]
+        $PhysicalPath,
+
+        # Credential to use for the virtual directory
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
+        [PSCredential]
+        $Credential
+    )
+
+    # Import the module that defines custom resources
+    Import-DscResource -Module PSDesiredStateConfiguration
+    Import-DscResource -Module WebAdministrationDsc
+
+    Node $NodeName
+    {
+        # Install the IIS role
+        WindowsFeature IIS
+        {
+            Ensure = 'Present'
+            Name   = 'Web-Server'
+        }
+
+        # Start the default website
+        WebSite DefaultSite
+        {
+            Ensure       = 'Present'
+            Name         = 'Default Web Site'
+            State        = 'Started'
+            PhysicalPath = 'C:\inetpub\wwwroot'
+            DependsOn    = '[WindowsFeature]IIS'
+        }
+
+        # Copy the virtual directory content
+        File VirtualDirectoryContent
+        {
+            Ensure          = 'Present'
+            DestinationPath = $PhysicalPath
+            Type            = 'Directory'
+            DependsOn       = '[WindowsFeature]IIS'
+        }
+
+        # Create the new virtual directory
+        WebVirtualDirectory NewVirtualDirectory
+        {
+            Ensure         = 'Present'
+            Website        = "Default Web Site"
+            WebApplication = ''
+            Name           = $VirtualDirectoryName
+            PhysicalPath   = $PhysicalPath
+            DependsOn      = '[File]VirtualDirectoryContent'
+            Credential     = $Credential
+        }
+    }
+}
+
+.EXAMPLE 2
+
+Create a new web virtual directory on the Default Web Site
+This example shows how to use the WebVirtualDirectory DSC resource to create a new virtual
+directory on the Default Web Site.
+
+configuration Sample_WebVirtualDirectory_NewVirtualDirectory
+{
+    param
+    (
+        # Target nodes to apply the configuration
+        [System.String[]]
+        $NodeName = 'localhost',
+
+        # Name of virtual directory to create
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
+        [System.String]
+        $VirtualDirectoryName,
+
+        # Physical path of the virtual directory
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
+        [System.String]
+        $PhysicalPath
+    )
+
+    # Import the module that defines custom resources
+    Import-DscResource -Module PSDesiredStateConfiguration
+    Import-DscResource -Module WebAdministrationDsc
+
+    Node $NodeName
+    {
+        # Install the IIS role
+        WindowsFeature IIS
+        {
+            Ensure = 'Present'
+            Name   = 'Web-Server'
+        }
+
+        # Start the default website
+        WebSite DefaultSite
+        {
+            Ensure       = 'Present'
+            Name         = 'Default Web Site'
+            State        = 'Started'
+            PhysicalPath = 'C:\inetpub\wwwroot'
+            DependsOn    = '[WindowsFeature]IIS'
+        }
+
+        # Copy the virtual directory content
+        File VirtualDirectoryContent
+        {
+            Ensure          = 'Present'
+            DestinationPath = $PhysicalPath
+            Type            = 'Directory'
+            DependsOn       = '[WindowsFeature]IIS'
+        }
+
+        # Create the new virtual directory
+        WebVirtualDirectory NewVirtualDirectory
+        {
+            Ensure         = 'Present'
+            Website        = "Default Web Site"
+            WebApplication = ''
+            Name           = $VirtualDirectoryName
+            PhysicalPath   = $PhysicalPath
+            DependsOn      = '[File]VirtualDirectoryContent'
+        }
+    }
+}
+
