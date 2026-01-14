@@ -1,0 +1,38 @@
+/*
+@TargetNode='localhost'
+@GeneratedBy=Administrator
+@GenerationDate=01/14/2026 09:13:00
+@GenerationHost=CLIENT01
+*/
+
+instance of MSFT_RegistryResource as $MSFT_RegistryResource1ref
+{
+ValueData = {
+    "YesItDoes"
+};
+ ModuleName = "PSDscResources";
+ ModuleVersion = "2.12.0.0";
+ ResourceID = "[Registry]Test";
+ ValueName = "DoesItStillWork";
+ SourceInfo = "::5::5::Registry";
+ Key = "HKLM:\\SOFTWARE\\DscOnAzure";
+ ConfigurationName = "LocalRegistry";
+};
+instance of OMI_ConfigurationDocument
+
+                    {
+ Version="2.0.0";
+
+                        MinimumCompatibleVersion = "1.0.0";
+
+                        CompatibleVersionAdditionalProperties= {"Omi_BaseResource:ConfigurationName"};
+
+                        Author="Administrator";
+
+                        GenerationDate="01/14/2026 09:13:00";
+
+                        GenerationHost="CLIENT01";
+
+                        Name="LocalRegistry";
+
+                    };

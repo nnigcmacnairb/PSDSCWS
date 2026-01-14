@@ -1,0 +1,25 @@
+TOPIC
+    about_WebAdministrationDsc
+
+SHORT DESCRIPTION
+    DSC resources for configuring web servers and related components.
+
+LONG DESCRIPTION
+    This module contains DSC resources for deploying and configuring web servers and related components.
+
+EXAMPLES
+    PS C:\> Get-DscResource -Module about_WebAdministrationDsc
+
+NOTE:
+    Thank you to the DSC Community contributors who contributed to this module by
+    writing code, sharing opinions, and provided feedback.
+
+TROUBLESHOOTING NOTE:
+    Go to the Github repository for read about issues, submit a new issue, and read
+    about new releases. https://github.com/dsccommunity/WebAdministrationDsc
+
+SEE ALSO
+  - https://github.com/dsccommunity/WebAdministrationDsc
+
+KEYWORDS
+    DSC, DscResource, IIS
